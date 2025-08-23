@@ -1,5 +1,5 @@
-export * from './errors/errors.ts';
-import { parsed } from './parsed/parsed.ts';
+export * from './errors/errors';
+import { parsed } from './parsed/parsed';
 
 import {
   BaseError,
@@ -25,7 +25,7 @@ import {
   DependencyError,
   createErrorLogObject,
   isCustomError,
-} from './errors/errors.ts';
+} from './errors/errors';
 
 
 
