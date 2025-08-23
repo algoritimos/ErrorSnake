@@ -2,16 +2,16 @@ name: Build and Publish to NPM
 
 on:
   push:
-    branches: [main, master]
     tags:
-      - 'v*' # Executa também quando tags de versão são pushadas
+      - 'v*'
   release:
     types: [published]
 
 jobs:
   build-and-publish:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
-    # Previne execução simultânea do workflow
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -20,7 +20,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Busca todo o histórico de commits para o versionamento
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -39,67 +38,29 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Determine version strategy
-        id: version
+      - name: Get version from tag
         run: |
-          # Se for uma tag, usa a versão da tag
-          if [[ ${{ github.ref_type }} == 'tag' ]]; then
-            echo "VERSION_STRATEGY=tag" >> $GITHUB_OUTPUT
-            echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          # Se for um release do GitHub, usa a versão do release
-          elif [[ ${{ github.event_name }} == 'release' ]]; then
-            echo "VERSION_STRATEGY=release" >> $GITHUB_OUTPUT
-            echo "RELEASE_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "VERSION_STRATEGY=bump" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Bump version (if not tagged release)
-        if: steps.version.outputs.VERSION_STRATEGY == 'bump'
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          npm version patch -m "chore: bump version to %s [skip ci]"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push version bump
-        if: steps.version.outputs.VERSION_STRATEGY == 'bump'
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref_name }}
-
-      - name: Set version from tag
-        if: steps.version.outputs.VERSION_STRATEGY == 'tag'
-        run: |
-          npm version ${{ steps.version.outputs.TAG_VERSION }} --no-git-tag-version
-          echo "Using tag version: ${{ steps.version.outputs.TAG_VERSION }}"
-
-      - name: Set version from release
-        if: steps.version.outputs.VERSION_STRATEGY == 'release'
-        run: |
-          npm version ${{ steps.version.outputs.RELEASE_VERSION }} --no-git-tag-version
-          echo "Using release version: ${{ steps.version.outputs.RELEASE_VERSION }}"
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          npm version $TAG_VERSION --no-git-tag-version
+          echo "Using tag version: $TAG_VERSION"
 
       - name: Verify package version
         run: |
           echo "Package version: $(npm pkg get version)"
           echo "Publishing to npm..."
 
-      - name: Publish to NPM
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    #   - name: Publish to NPM
+    #     run: npm publish --access public
+    #     env:
+    #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}  # Ensure this secret exists
 
-      - name: Create GitHub Release (on tag)
-        if: steps.version.outputs.VERSION_STRATEGY == 'tag'
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.version.outputs.TAG_VERSION }}
-          name: Release ${{ steps.version.outputs.TAG_VERSION }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           body: |
-            Automatic release for version ${{ steps.version.outputs.TAG_VERSION }}
+            Automatic release for version ${{ github.ref_name }}
             - Build: ${{ github.run_number }}
             - Commit: ${{ github.sha }}
           files: |
