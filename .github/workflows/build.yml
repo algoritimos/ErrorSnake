@@ -38,21 +38,10 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Get version from tag
-        run: |
-          TAG_VERSION=${GITHUB_REF#refs/tags/v}
-          npm version $TAG_VERSION --no-git-tag-version
-          echo "Using tag version: $TAG_VERSION"
-
       - name: Verify package version
         run: |
           echo "Package version: $(npm pkg get version)"
           echo "Publishing to npm..."
-
-    #   - name: Publish to NPM
-    #     run: npm publish --access public
-    #     env:
-    #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}  # Ensure this secret exists
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
