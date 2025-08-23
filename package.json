@@ -1,0 +1,36 @@
+{
+  "name": "ErrorSnake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsx watch main.ts",
+    "start": "node dist/index.js",
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
+    "test:dev": "vitest",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "https://github.com/kovarike",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "vitest": "^3.2.4"
+  }
+}

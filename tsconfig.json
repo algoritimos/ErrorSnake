@@ -1,0 +1,79 @@
+// {
+//   "compilerOptions": {
+//     // Configurações de output
+//     "outDir": "dist",
+//     "rootDir": "src",
+
+//     // Ambiente e módulos
+//     "target": "ES2023", // Alinhado com a versão do Node.js 22
+//     "module": "nodenext",
+//     "moduleResolution": "nodenext",
+//     "lib": ["ES2023"], // Foca apenas em APIs JavaScript modernas (remove DOM)
+//     "types": ["node"], // Apenas definições do Node.js
+
+//     // Strictness
+//     "strict": true,
+//     // "exactOptionalPropertyTypes": true,
+//     "noUncheckedIndexedAccess": true,
+//     "emitDeclarationOnly":true,
+//     "allowImportingTsExtensions": true,
+
+//     // Interoperabilidade
+//     "esModuleInterop": true,
+//     "allowSyntheticDefaultImports": true,
+
+//     // Geração de declarações e debugging
+//     "declaration": true,
+//     "declarationMap": true,
+//     "sourceMap": true,
+
+//     // Modernidade e segurança
+//     "verbatimModuleSyntax": true, // Importante para ESM
+//     "isolatedModules": true,
+//     "skipLibCheck": true,
+//     "forceConsistentCasingInFileNames": true
+//   },
+//   "include": ["src"],
+//   "exclude": ["node_modules", "dist", "**/*.test.ts"]
+// }
+
+
+
+{
+  "compilerOptions": {
+    // Diretórios
+    "outDir": "dist",
+    "rootDir": "src",
+
+    // Ambiente e módulos
+    "target": "ES2020",                  // Compatível com Node >=14+ e browsers modernos
+    "module": "nodenext",                  // Gera ESM limpo
+    "moduleResolution": "nodenext",      // Melhor suporte Node ESM
+    "lib": ["ES2020"],                   // APIs modernas do JS
+    "types": ["node"],
+
+    // Strictness
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    // "exactOptionalPropertyTypes": true,
+
+    // Interoperabilidade
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,  // Permite importar arquivos .ts diretamente
+
+    // Saída de tipos e debugging
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    // Modernidade e segurança
+    "verbatimModuleSyntax": true,        // Mantém "import/export" sem transpilar
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

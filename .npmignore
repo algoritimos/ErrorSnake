@@ -1,0 +1,9 @@
+node_modules
+src
+.github
+.github/**/*
+.github/workflows
+.github/workflows/build.yml
+
+
+tsconfig.json
