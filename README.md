@@ -7,7 +7,7 @@ Uma biblioteca TypeScript para padronização, enriquecimento e serialização d
 ## Instalação
 
 ```bash
-npm install ErrorSnake
+npm install error-snake
 ```
 
 ---
@@ -99,7 +99,7 @@ A função assíncrona `parsed(obj)` converte recursivamente qualquer objeto par
 ### Criando e logando um erro customizado
 
 ```typescript
-import { ValidationError } from 'ErrorSnake';
+import { ValidationError } from 'error-snake';
 
 const error = new ValidationError({
 	message: 'O campo email é obrigatório.',
@@ -115,7 +115,7 @@ console.log(error.toLogObject());
 ### Convertendo para snake_case com `parsed`
 
 ```typescript
-import { parsed } from 'ErrorSnake';
+import { parsed } from 'error-snake';
 
 const logObject = error.toLogObject();
 const snakeCaseLog = await parsed(logObject);
@@ -133,7 +133,7 @@ console.log(snakeCaseLog);
 ### Exemplo de uso integrado (como no `index.ts`)
 
 ```typescript
-import { InternalServerError, parsed } from 'ErrorSnake';
+import { InternalServerError, parsed } from 'error-snake';
 
 const error = new InternalServerError({
 	message: 'Erro inesperado',
