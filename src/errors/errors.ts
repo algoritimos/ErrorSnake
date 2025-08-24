@@ -1,5 +1,3 @@
-'use server'
-
 type BaseErrorParams = {
   name: string;
   message: string;

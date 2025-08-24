@@ -1,5 +1,3 @@
-'use server'
-
 export async function parsed<T = unknown>(obj: T): Promise<T> {
   const seen = new WeakMap<object, unknown>();
   return _parsed(obj, seen) as T;
